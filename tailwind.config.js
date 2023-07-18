@@ -1,7 +1,10 @@
 module.exports = {
-  content: ["./src/**/*.{ts,tsx}"],
+  content: ['./src/**/*.{ts,tsx}'],
   theme: {
+    fontFamily: {
+      granjon: ['Granjon', 'system-ui'],
+    },
     extend: {},
   },
-  plugins: [require("@tailwindcss/line-clamp")],
+  plugins: [require('@tailwindcss/line-clamp')],
 };
