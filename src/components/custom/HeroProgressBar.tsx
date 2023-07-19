@@ -8,13 +8,15 @@ interface Props {
 export default function HeroProgressBar({ onClick, isCurrent }: Props) {
   return (
     <li className='w-full'>
-      <button className='block h-px w-full bg-gray-300' onClick={onClick}>
-        <div
-          className={clsx('h-full bg-gray-500', {
-            'animate-progress-bar': isCurrent,
-            'w-0': !isCurrent,
-          })}
-        />
+      <button className='block w-full py-2' onClick={onClick}>
+        <div className='h-[2px] w-full bg-gray-300'>
+          <div
+            className={clsx('h-full bg-gray-600', {
+              'animate-progress-bar': isCurrent,
+              'w-0': !isCurrent,
+            })}
+          />
+        </div>
       </button>
     </li>
   );

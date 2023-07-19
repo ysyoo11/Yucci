@@ -1,6 +1,7 @@
 import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
-import clsx from 'clsx';
+import { useKeenSlider } from 'keen-slider/react';
 import { useEffect, useState } from 'react';
+import 'keen-slider/keen-slider.min.css';
 
 import HeroProgressBar from './HeroProgressBar';
 
@@ -19,14 +20,27 @@ const images = [
   },
 ] as const;
 
-type HeroImage = (typeof images)[number];
-
-// TODO: Styling for PC view
-// TODO: Refactor
+// TODO: Change hero image animation + change text color when on image
 export default function HeroSection() {
-  const [currentSlide, setCurrentSlide] = useState<HeroImage>(images[0]);
-  const [index, setIndex] = useState(0);
   const [slidePlaying, setSlidePlaying] = useState(true);
+  const [opacities, setOpacities] = useState<number[]>([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+    slides: images.length,
+    initial: 0,
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
+    },
+    created() {
+      setLoaded(true);
+    },
+    loop: true,
+    detailsChanged(s) {
+      const newOpacities = s.track.details.slides.map((slide) => slide.portion);
+      setOpacities(newOpacities);
+    },
+  });
 
   const handlePlayPause = () => {
     setSlidePlaying((prev) => !prev);
@@ -34,75 +48,64 @@ export default function HeroSection() {
 
   useEffect(() => {
     if (slidePlaying) {
-      const heroInterval = setInterval(
-        () => setIndex((i) => (i + 1) % images.length),
-        5000
-      );
+      const heroInterval = setInterval(() => instanceRef.current?.next(), 5000);
       return () => clearInterval(heroInterval);
     }
   }, [slidePlaying]);
-
-  useEffect(() => {
-    setCurrentSlide(images[index]);
-  }, [index]);
 
   return (
     <section className='relative mx-auto max-w-7xl px-4'>
       <div className='relative flex flex-col lg:flex-row'>
         <div className='relative mb-6 flex w-full items-center space-x-2 lg:absolute lg:-left-20 lg:top-1/2 lg:w-72 lg:-translate-y-1/2 lg:rotate-90'>
-          <button onClick={handlePlayPause} className='lg:-rotate-90'>
-            {slidePlaying ? (
-              <PauseIcon className='h-4 w-4' />
-            ) : (
-              <PlayIcon className='h-4 w-4' />
-            )}
-          </button>
+          {instanceRef.current && loaded && (
+            <button onClick={handlePlayPause} className='lg:-rotate-90'>
+              {slidePlaying ? (
+                <PauseIcon className='h-4 w-4' />
+              ) : (
+                <PlayIcon className='h-4 w-4' />
+              )}
+            </button>
+          )}
           <ul className='flex w-full space-x-2'>
-            {images.map((img, idx) => (
-              <HeroProgressBar
-                key={img.title}
-                onClick={() => setIndex(idx)}
-                isCurrent={index === idx && slidePlaying}
-              />
-            ))}
+            {loaded &&
+              instanceRef.current &&
+              images.map((img, idx) => (
+                <HeroProgressBar
+                  key={img.title}
+                  onClick={() => instanceRef.current?.moveToIdx(idx)}
+                  isCurrent={currentSlide === idx && slidePlaying}
+                />
+              ))}
           </ul>
         </div>
-        <div className='mx-auto w-full max-w-3xl'>
+        <div ref={sliderRef} className='keen-slider mx-auto w-full max-w-3xl'>
           {images.map((img, idx) => (
             <div
               key={`image-${img.title}`}
-              className='h-max w-full overflow-hidden'
+              className='keen-slider__slide h-max w-full overflow-hidden'
+              style={{ opacity: opacities[idx] }}
             >
               <img
-                src={currentSlide.src}
-                alt={currentSlide.title}
+                src={img.src}
+                alt={img.title}
                 draggable={false}
-                className={clsx({
-                  'block animate-hero-img': index === idx,
-                  hidden: index !== idx,
-                })}
+                className='animate-hero-img'
               />
             </div>
           ))}
         </div>
       </div>
-      {images.map((img, idx) => (
-        <div
-          key={`${img.title}-${idx}`}
-          className={clsx(
-            'mt-4 flex flex-col items-center justify-center space-y-4',
-            {
-              'block animate-arise': index === idx,
-              hidden: index !== idx,
-            }
-          )}
-        >
-          <h2 className='cursor-default text-center text-4xl'>{img.title}</h2>
-          <button className='bg-black px-8 py-5 text-sm font-bold uppercase text-white transition-opacity hover:opacity-80'>
-            Explore the collection
-          </button>
-        </div>
-      ))}
+      <div
+        key={`${images[currentSlide].title}-title`}
+        className='sticky bottom-10 mt-4 flex animate-arise flex-col items-center justify-center space-y-4'
+      >
+        <h2 className='cursor-default text-center text-4xl'>
+          {images[currentSlide].title}
+        </h2>
+        <button className='bg-black px-8 py-5 text-sm font-bold uppercase text-white transition-opacity hover:opacity-80'>
+          Explore the collection
+        </button>
+      </div>
     </section>
   );
 }
