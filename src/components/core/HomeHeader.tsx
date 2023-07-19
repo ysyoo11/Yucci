@@ -11,7 +11,7 @@ export default function HomeHeader() {
     <header
       className={clsx('fixed top-0 z-20 w-full bg-white px-4', {
         'py-4': logoShrink,
-        'pt-12 lg:py-6 lg:pb-8': !logoShrink,
+        'pt-12 lg:py-2': !logoShrink,
       })}
     >
       <div className='mx-auto w-full max-w-7xl'>

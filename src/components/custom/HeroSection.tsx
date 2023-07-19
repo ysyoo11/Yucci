@@ -47,41 +47,45 @@ export default function HeroSection() {
   }, [index]);
 
   return (
-    <section className='relative px-4'>
-      <div className='relative mb-6 flex w-full items-center space-x-2'>
-        <button onClick={handlePlayPause}>
-          {slidePlaying ? (
-            <PauseIcon className='h-4 w-4' />
-          ) : (
-            <PlayIcon className='h-4 w-4' />
-          )}
-        </button>
-        <ul className='flex w-full space-x-2'>
-          {images.map((img, idx) => (
-            <HeroProgressBar
-              key={img.title}
-              onClick={() => setIndex(idx)}
-              isCurrent={index === idx && slidePlaying}
-            />
-          ))}
-        </ul>
-      </div>
-      {images.map((img, idx) => (
-        <div
-          key={`image-${img.title}`}
-          className='h-max w-full overflow-hidden'
-        >
-          <img
-            src={currentSlide.src}
-            alt={currentSlide.title}
-            draggable={false}
-            className={clsx({
-              'block animate-hero-img': index === idx,
-              hidden: index !== idx,
-            })}
-          />
+    <section className='relative mx-auto max-w-7xl px-4'>
+      <div className='relative flex flex-col lg:flex-row'>
+        <div className='relative mb-6 flex w-full items-center space-x-2 lg:absolute lg:-left-20 lg:top-1/2 lg:w-72 lg:-translate-y-1/2 lg:rotate-90'>
+          <button onClick={handlePlayPause} className='lg:-rotate-90'>
+            {slidePlaying ? (
+              <PauseIcon className='h-4 w-4' />
+            ) : (
+              <PlayIcon className='h-4 w-4' />
+            )}
+          </button>
+          <ul className='flex w-full space-x-2'>
+            {images.map((img, idx) => (
+              <HeroProgressBar
+                key={img.title}
+                onClick={() => setIndex(idx)}
+                isCurrent={index === idx && slidePlaying}
+              />
+            ))}
+          </ul>
         </div>
-      ))}
+        <div className='mx-auto w-full max-w-3xl'>
+          {images.map((img, idx) => (
+            <div
+              key={`image-${img.title}`}
+              className='h-max w-full overflow-hidden'
+            >
+              <img
+                src={currentSlide.src}
+                alt={currentSlide.title}
+                draggable={false}
+                className={clsx({
+                  'block animate-hero-img': index === idx,
+                  hidden: index !== idx,
+                })}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
       {images.map((img, idx) => (
         <div
           key={`${img.title}-${idx}`}
