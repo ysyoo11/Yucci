@@ -16,7 +16,7 @@ const images = [
   },
   {
     src: 'images/hero/hero-3.avif',
-    title: "MEN'S BAG",
+    title: "MEN'S BAGS",
   },
 ] as const;
 
