@@ -6,6 +6,7 @@ import App from './App';
 import Home from './pages/Home';
 import ItemDetail from './pages/ItemDetail';
 import NotFound from './pages/NotFound';
+import SignIn from './pages/SignIn';
 
 import './index.css';
 
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, element: <Home /> },
+      {
+        path: '/signin',
+        element: <SignIn />,
+      },
       {
         path: '/item/:id',
         element: <ItemDetail />,

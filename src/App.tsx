@@ -14,7 +14,7 @@ function App() {
     <HeaderProvider>
       {location.pathname === '/' ? <HomeHeader /> : <Header />}
       <QueryClientProvider client={queryClient}>
-        <main className='mt-12 lg:mt-24'>
+        <main className='mt-16 lg:mt-24'>
           <Outlet />
         </main>
       </QueryClientProvider>
