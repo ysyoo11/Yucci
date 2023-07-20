@@ -9,11 +9,11 @@ export default function HomeHeader() {
   const { logoShrink } = useHeaderStore();
 
   return (
-    <header className='fixed top-0 z-20 w-full bg-white px-4'>
+    <header className='fixed top-0 z-[1] w-full bg-white px-4'>
       <div
         className={clsx('relative mx-auto w-full max-w-7xl', {
           'py-4': logoShrink,
-          'pt-12 lg:py-2': !logoShrink,
+          'pt-12 lg:pb-2 lg:pt-6': !logoShrink,
         })}
       >
         <div className='flex-1'>
