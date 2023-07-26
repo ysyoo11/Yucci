@@ -3,6 +3,8 @@ import { useKeenSlider } from 'keen-slider/react';
 import { useEffect, useState } from 'react';
 import 'keen-slider/keen-slider.min.css';
 
+import Button from '../ui/Button';
+
 import HeroProgressBar from './HeroProgressBar';
 
 const images = [
@@ -102,9 +104,7 @@ export default function HeroSection() {
         <h2 className='cursor-default text-center text-4xl'>
           {images[currentSlide].title}
         </h2>
-        <button className='bg-black px-8 py-5 text-sm font-bold uppercase text-white transition-opacity hover:opacity-80'>
-          Explore the collection
-        </button>
+        <Button>Explore the collection</Button>
       </div>
     </section>
   );
