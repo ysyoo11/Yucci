@@ -16,6 +16,7 @@
     "@types/react-dom": "^18.2.7",
     "axios": "^1.4.0",
     "clsx": "^2.0.0",
+    "firebase": "^10.1.0",
     "keen-slider": "^6.8.6",
     "lodash.debounce": "^4.0.8",
     "react": "^18.2.0",
@@ -44,7 +45,6 @@
     ]
   },
   "devDependencies": {
-    "@tailwindcss/line-clamp": "^0.4.4",
     "@tanstack/eslint-plugin-query": "^4.29.25",
     "@types/lodash.debounce": "^4.0.7",
     "@types/react-router-dom": "^5.3.3",

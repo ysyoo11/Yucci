@@ -3,6 +3,7 @@ import { ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Fragment, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useAuth } from '../../context/auth-context';
 import Logo from '../core/Logo';
 
 interface Props {
@@ -12,16 +13,14 @@ interface Props {
 
 const generalMenu = [
   {
-    name: 'Sign In',
-    href: '/signin',
-  },
-  {
     name: 'My Orders',
-    href: '/', // TODO:
+    href: '/my-orders',
   },
 ] as const;
 
 export default function MenuModal({ isOpen, onClose }: Props) {
+  const { user, logout } = useAuth();
+
   const navigate = useNavigate();
   const menuList = useMemo(
     () => [
@@ -102,16 +101,36 @@ export default function MenuModal({ isOpen, onClose }: Props) {
                     </ul>
                     <hr />
                     <ul className='space-y-6'>
+                      {!user && (
+                        <li>
+                          <button
+                            className='flex items-center justify-between py-2 underline underline-offset-4 hover:no-underline'
+                            onClick={() => navigate('/signin')}
+                          >
+                            <span className='block font-bold'>Sign in</span>
+                          </button>
+                        </li>
+                      )}
                       {generalMenu.map(({ name, href }, idx) => (
                         <li key={`general-menu-${name}-${idx}`}>
                           <button
                             className='flex items-center justify-between py-2 underline underline-offset-4 hover:no-underline'
-                            onClick={() => navigate(href)}
+                            onClick={() => navigate(user ? href : '/signin')}
                           >
                             <span className='block font-bold'>{name}</span>
                           </button>
                         </li>
                       ))}
+                      {user && (
+                        <li>
+                          <button
+                            className='flex items-center justify-between py-2 underline underline-offset-4 hover:no-underline'
+                            onClick={logout}
+                          >
+                            <span className='block font-bold'>Sign out</span>
+                          </button>
+                        </li>
+                      )}
                     </ul>
                   </div>
                 </div>
