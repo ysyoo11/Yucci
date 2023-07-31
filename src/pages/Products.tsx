@@ -65,7 +65,7 @@ export default function Products() {
   return (
     <>
       <div
-        className='relative h-96 w-full bg-cover bg-center'
+        className='relative h-96 w-full bg-cover bg-center lg:h-[40vh]'
         style={{
           backgroundImage: `url(../images/hero/products/hero-${params.category}.jpg)`,
         }}
@@ -75,7 +75,7 @@ export default function Products() {
         </div>
         <div className='h-full w-full bg-black/20' />
       </div>
-      <section className='grid grid-cols-2 gap-[1px] border bg-gray-200'>
+      <section className='grid grid-cols-2 gap-[1px] border bg-gray-200 md:grid-cols-3 lg:grid-cols-4'>
         {products.map((item) => (
           <div
             key={item.id}
@@ -85,7 +85,7 @@ export default function Products() {
             <div className='mx-auto w-2/3'>
               <img src={item.imageSrc} alt={item.name} />
             </div>
-            <p className='text-center text-xs font-bold uppercase'>
+            <p className='text-center text-xs font-bold uppercase lg:text-sm'>
               {item.name}
             </p>
             <div className='absolute bottom-3 left-1/2 -translate-x-1/2'>
