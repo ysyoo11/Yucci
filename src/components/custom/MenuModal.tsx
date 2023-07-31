@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Fragment, useMemo } from 'react';
+import { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../context/auth-context';
@@ -18,31 +18,22 @@ const generalMenu = [
   },
 ] as const;
 
+const menuList = [
+  {
+    title: 'women',
+    href: '/products/women',
+  },
+  {
+    title: 'men',
+    href: '/products/men',
+  },
+] as const;
+
 export default function MenuModal({ isOpen, onClose }: Props) {
   const { user, logout } = useAuth();
 
   const navigate = useNavigate();
-  const menuList = useMemo(
-    () => [
-      {
-        title: 'gifts',
-        onClick: () => {},
-      },
-      {
-        title: "what's new",
-        onClick: () => {},
-      },
-      {
-        title: 'women',
-        onClick: () => {},
-      },
-      {
-        title: 'men',
-        onClick: () => {},
-      },
-    ],
-    []
-  );
+
   return (
     <Transition show={isOpen} as={Fragment}>
       <Dialog as='div' className='relative z-[2]' onClose={onClose}>
@@ -85,11 +76,14 @@ export default function MenuModal({ isOpen, onClose }: Props) {
 
                   <div className='mt-5 space-y-8 px-6'>
                     <ul>
-                      {menuList.map(({ title, onClick }, idx) => (
+                      {menuList.map(({ title, href }, idx) => (
                         <li key={`menu-list-${title}-${idx}`}>
                           <button
                             className='group flex w-full items-center justify-between py-4 pr-2 lg:w-max lg:justify-start lg:space-x-1'
-                            onClick={onClick}
+                            onClick={() => {
+                              navigate(href);
+                              onClose();
+                            }}
                           >
                             <span className='block text-sm font-bold uppercase lg:text-base'>
                               {title}
@@ -115,7 +109,10 @@ export default function MenuModal({ isOpen, onClose }: Props) {
                         <li key={`general-menu-${name}-${idx}`}>
                           <button
                             className='flex items-center justify-between py-2 underline underline-offset-4 hover:no-underline'
-                            onClick={() => navigate(user ? href : '/signin')}
+                            onClick={() => {
+                              navigate(user ? href : '/signin');
+                              onClose;
+                            }}
                           >
                             <span className='block font-bold'>{name}</span>
                           </button>
