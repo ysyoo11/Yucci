@@ -8,6 +8,7 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
+import { get, ref } from 'firebase/database';
 import {
   ReactNode,
   createContext,
@@ -17,16 +18,22 @@ import {
   useState,
 } from 'react';
 
-import firebaseApp from '../service/firebase';
+import firebaseApp, { db } from '../service/firebase';
 
 import { useAssertiveStore } from './assertives';
 
+type MyUser = User & {
+  isAdmin: boolean;
+};
+
 export type AuthState = {
-  user: User | null;
+  user: MyUser | null;
+  isLoading: boolean;
 };
 
 const initialState: AuthState = {
   user: null,
+  isLoading: false,
 };
 
 type AuthServiceProvider = 'google' | 'github';
@@ -39,7 +46,8 @@ export type AuthStore = AuthState & {
 export const AuthContext = createContext<AuthState>(initialState);
 
 export function UserAuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<MyUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { showNoti, showAlert } = useAssertiveStore();
 
   const auth = getAuth(firebaseApp);
@@ -66,10 +74,23 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
       .catch(showAlert);
   };
 
+  const checkAdmin = async (user: User): Promise<MyUser> => {
+    return get(ref(db, 'admins')).then((snapshot) => {
+      if (snapshot.exists()) {
+        const admins = snapshot.val() as string[];
+        const isAdmin = admins.includes(user.uid);
+        return { ...user, isAdmin };
+      }
+      return { ...user, isAdmin: false };
+    });
+  };
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setUser(user);
+        const updatedUser = await checkAdmin(user) //
+          .finally(() => setIsLoading(false));
+        setUser(updatedUser);
       }
     });
     return unsubscribe;
@@ -78,6 +99,7 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthStore>(
     () => ({
       user,
+      isLoading,
       login,
       logout,
     }),

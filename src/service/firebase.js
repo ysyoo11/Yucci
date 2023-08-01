@@ -1,6 +1,6 @@
 import { getAnalytics } from 'firebase/analytics';
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore/lite';
+import { getDatabase } from 'firebase/database';
 
 import { ENV } from '../utils/env';
 
@@ -17,6 +17,6 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
-const db = getFirestore(firebaseApp);
+export const db = getDatabase();
 
 export default firebaseApp;
