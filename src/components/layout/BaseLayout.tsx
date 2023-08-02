@@ -2,6 +2,7 @@ import { ReactNode, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../context/auth-context';
+import Loading from '../core/Loading';
 
 const userOnlyPath = [
   '/my-orders',
@@ -19,7 +20,6 @@ export default function BaseLayout({ children }: { children: ReactNode }) {
   const { user, isLoading } = useAuth();
 
   useEffect(() => {
-    console.log(`isLoading: ${isLoading}`);
     if (isLoading) return;
     if (!user && userOnlyPath.includes(location.pathname)) {
       navigate('/signin', { replace: true });
@@ -29,7 +29,5 @@ export default function BaseLayout({ children }: { children: ReactNode }) {
     }
   }, [user, isLoading, location.pathname]);
 
-  return (
-    <main className='mt-16'>{isLoading ? <p>Loading...</p> : children}</main>
-  );
+  return <main className='mt-16'>{isLoading ? <Loading /> : children}</main>;
 }
