@@ -75,14 +75,15 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
   };
 
   const checkAdmin = async (user: User): Promise<MyUser> => {
-    return get(ref(db, 'admins')).then((snapshot) => {
-      if (snapshot.exists()) {
-        const admins = snapshot.val() as string[];
-        const isAdmin = admins.includes(user.uid);
-        return { ...user, isAdmin };
-      }
-      return { ...user, isAdmin: false };
-    });
+    return get(ref(db, 'admins')) //
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const admins = snapshot.val() as string[];
+          const isAdmin = admins.includes(user.uid);
+          return { ...user, isAdmin };
+        }
+        return { ...user, isAdmin: false };
+      });
   };
 
   useEffect(() => {
