@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import GoogleLogo from '../components/svg/GoogleLogo';
 import Button from '../components/ui/Button';
+import TextInput from '../components/ui/TextInput';
 import { useAssertiveStore } from '../context/assertives';
 import { useAuth } from '../context/auth-context';
 
@@ -21,13 +22,6 @@ export default function SignIn() {
           login('google');
         },
       },
-      // {
-      //   media: 'github',
-      //   logo: GithubLogo,
-      //   onClick: () => {
-      //     login('github');
-      //   },
-      // },
     ],
     []
   );
@@ -96,6 +90,13 @@ export default function SignIn() {
               EMAIL*
             </label>
           </div>
+          <TextInput
+            placeholder='EMAIL'
+            onChange={(e) => setEmail(e.target.value)}
+            id='email'
+            value={email}
+            name='email'
+          />
           <Button className='tracking-wide' full>
             continue
           </Button>

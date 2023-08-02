@@ -1,24 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import FakeProductsClient from '../api/products';
+import FakeProductsClient from '../api/fake-products';
+import Loading from '../components/core/Loading';
 import Button from '../components/ui/Button';
 import displayPrice from '../utils/display-price';
 
-type Product = {
-  name: string;
-  price: number;
-  imageSrc: string;
-  id: string;
-  description: string;
-};
+import type { Product } from '../types/product';
 
 export default function ItemDetail() {
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const { id } = useParams();
 
   const getProducts = async () => {
-    const client = new FakeProductsClient();
+    const client = new FakeProductsClient(); // TODO: Fix it to real data
     return await client.products();
   };
 
@@ -30,19 +25,17 @@ export default function ItemDetail() {
   }, []);
 
   if (!product) {
-    return <p>loading...</p>;
+    return <Loading />;
   }
 
   return (
     <div className='mx-auto max-w-sm px-4 md:max-w-lg lg:flex lg:max-w-7xl'>
       <div className='py-10 lg:w-full'>
-        <img src={product.imageSrc} alt={product.name} />
+        <img src={product.imageURL} alt={product.title} />
       </div>
       <div className='lg:w-full'>
-        <p className='text-center font-bold uppercase'>{product.name}</p>
-        <p className='text-center font-bold'>
-          AU$ {displayPrice(product.price)}
-        </p>
+        <p className='text-center font-bold uppercase'>{product.title}</p>
+        <p className='text-center font-bold'>{displayPrice(product.price)}</p>
         <Button full className='mt-10'>
           add to cart
         </Button>
