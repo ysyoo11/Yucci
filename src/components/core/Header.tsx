@@ -1,6 +1,7 @@
 import HeaderNavigation from './HeaderNavigation';
 import Logo from './Logo';
 
+// TODO: Adjust logo length on header
 export default function Header() {
   return (
     <header className='fixed top-0 z-[1] w-full bg-white px-4'>

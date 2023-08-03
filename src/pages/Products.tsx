@@ -3,6 +3,7 @@ import { MouseEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Loading from '../components/core/Loading';
+import Banner from '../components/custom/Banner';
 import { useAssertiveStore } from '../context/assertives';
 import useProducts from '../hooks/use-products';
 import displayPrice from '../utils/display-price';
@@ -26,19 +27,10 @@ export default function Products() {
   return (
     <>
       {/* TODO: Fix background image url logic */}
-      <div
-        className='relative h-96 w-full bg-cover bg-center lg:h-[40vh]'
-        style={{
-          backgroundImage: `url(../images/hero/products/hero-${
-            category || 'women'
-          }.jpg)`,
-        }}
-      >
-        <div className='absolute left-1/2 top-1/2 z-[1] -translate-x-1/2 space-y-4 text-center text-white'>
-          <p className='text-3xl uppercase'>{category || 'All items'}</p>
-        </div>
-        <div className='h-full w-full bg-black/20' />
-      </div>
+      <Banner
+        title={category || 'All items'}
+        bgURL={`../images/hero/products/hero-${category || 'women'}.jpg`}
+      />
       {isLoading && (
         <div className='relative h-96'>
           <Loading />
