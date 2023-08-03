@@ -14,6 +14,7 @@ import { Product } from '../types/product';
 
 type CartItem = Product & {
   quantity: number;
+  selectedOption: string;
 };
 
 type CartState = {
@@ -28,7 +29,7 @@ export const CartContext = createContext<CartState>(initialState);
 
 export type CartStore = CartState & {
   setCartItems: Dispatch<SetStateAction<CartItem[]>>;
-  addToCart: (product: Product) => void;
+  addToCart: (product: Product, selectedOption: string) => void;
   deleteFromCart: (product: Product) => void;
   total: {
     quantity: number;
@@ -49,7 +50,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return { quantity, price };
   }, [cartItems]);
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, selectedOption: string) => {
     if (cartItems.find((item) => item.id === product.id)) {
       setCartItems((prev) =>
         prev.map((item) =>
@@ -60,7 +61,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       );
       return;
     }
-    setCartItems((prev) => [...prev, { ...product, quantity: 1 }]);
+    setCartItems((prev) => [
+      ...prev,
+      { ...product, quantity: 1, selectedOption },
+    ]);
   };
 
   const deleteFromCart = (product: Product) => {
