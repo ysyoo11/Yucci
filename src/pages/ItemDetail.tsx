@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import Loading from '../components/core/Loading';
 import Button from '../components/ui/Button';
 import { QUERY_KEY } from '../constant/query-key';
+import { useCartContext } from '../context/cart-context';
 import { getProductDetail } from '../service/firebase';
 import displayPrice from '../utils/display-price';
 
@@ -17,6 +18,7 @@ export default function ItemDetail() {
       refetchOnMount: false,
     }
   );
+  const { addToCart } = useCartContext();
 
   if (isLoading || !product) {
     return <Loading />;
@@ -30,7 +32,7 @@ export default function ItemDetail() {
       <div className='lg:w-full'>
         <p className='text-center font-bold uppercase'>{product.title}</p>
         <p className='text-center font-bold'>{displayPrice(product.price)}</p>
-        <Button full className='mt-10'>
+        <Button full className='mt-10' onClick={() => addToCart(product)}>
           add to cart
         </Button>
         <p className='mt-6'>{product.description}</p>
