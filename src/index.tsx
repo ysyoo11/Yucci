@@ -5,6 +5,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import AccountSettings from './pages/AccountSettings';
 import NewProduct from './pages/admin/NewProduct';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 import Home from './pages/Home';
 import ItemDetail from './pages/ItemDetail';
 import MyAccount from './pages/MyAccount';
@@ -61,6 +63,14 @@ const router = createBrowserRouter([
         path: '/saved-items',
         element: <SavedItems />,
       },
+      {
+        path: '/cart',
+        element: <Cart />,
+      },
+      {
+        path: '/checkout',
+        element: <Checkout />,
+      },
     ],
   },
 ]);
@@ -68,8 +78,4 @@ const router = createBrowserRouter([
 const root = document.getElementById('root');
 if (!root) throw new Error('Root element is not found.');
 
-createRoot(root).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
-);
+createRoot(root).render(<RouterProvider router={router} />);
