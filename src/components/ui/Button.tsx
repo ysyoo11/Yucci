@@ -27,7 +27,7 @@ export default function Button({
   return (
     <button
       className={clsx(
-        'px-8 py-5 font-bold uppercase disabled:cursor-not-allowed disabled:bg-gray-300',
+        'px-8 py-4 font-bold uppercase disabled:cursor-not-allowed disabled:bg-gray-300',
         className,
         colorClasses[color],
         {
