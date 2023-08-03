@@ -3,7 +3,6 @@ import {
   Bars3Icon,
   MagnifyingGlassIcon,
   PencilIcon,
-  ShoppingBagIcon,
   UserIcon,
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
@@ -12,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 import { useAuth } from '../../context/auth-context';
+import CartButton from '../custom/CartButton';
 import MenuModal from '../custom/MenuModal';
 import SearchModal from '../custom/SearchModal';
 
@@ -47,11 +47,7 @@ export default function HeaderNavigation() {
   return (
     <nav className='absolute right-2 top-6 flex'>
       <ul className='flex items-center space-x-4'>
-        <li>
-          <button>
-            <ShoppingBagIcon className='h-5 w-5 stroke-[1.5px]' />
-          </button>
-        </li>
+        <CartButton />
         <Menu as='li' className='inline-block h-max'>
           <Menu.Button>
             <UserIcon className='h-5 w-5 stroke-[1.5px]' />

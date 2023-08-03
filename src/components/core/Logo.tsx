@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 type Props = {
   className?: string;
 };
-
+// TODO: Adjust logo length on header
 export default function Logo({ className }: Props) {
   return (
     <Link to='/'>
