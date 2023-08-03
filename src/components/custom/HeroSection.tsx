@@ -22,7 +22,7 @@ const images = [
   },
 ] as const;
 
-// TODO: Change hero image animation + change text color when on image
+// TODO: Change text color when on image
 export default function HeroSection() {
   const [slidePlaying, setSlidePlaying] = useState(true);
   const [opacities, setOpacities] = useState<number[]>([]);
@@ -104,7 +104,13 @@ export default function HeroSection() {
         <h2 className='cursor-default text-center text-4xl'>
           {images[currentSlide].title}
         </h2>
-        <Button>Explore the collection</Button>
+        <Button
+          onClick={() => {
+            // TODO:
+          }}
+        >
+          Explore the collection
+        </Button>
       </div>
     </section>
   );

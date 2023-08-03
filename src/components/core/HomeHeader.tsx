@@ -5,6 +5,7 @@ import useHeaderStore from '../../context/header-context';
 import HeaderNavigation from './HeaderNavigation';
 import Logo from './Logo';
 
+// TODO: Adjust logo length on header
 export default function HomeHeader() {
   const { logoShrink } = useHeaderStore();
 
