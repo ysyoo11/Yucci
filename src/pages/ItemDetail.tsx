@@ -1,30 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-import FakeProductsClient from '../api/fake-products';
 import Loading from '../components/core/Loading';
 import Button from '../components/ui/Button';
+import { QUERY_KEY } from '../constant/query-key';
+import { getProductDetail } from '../service/firebase';
 import displayPrice from '../utils/display-price';
 
-import type { Product } from '../types/product';
-
 export default function ItemDetail() {
-  const [product, setProduct] = useState<Product | undefined>(undefined);
   const { id } = useParams();
+  const { data: product, isLoading } = useQuery(
+    [QUERY_KEY.PRODUCT_DETAIL, id],
+    () => getProductDetail(id!),
+    {
+      staleTime: 1000 * 60 * 5, // 5 min
+      refetchOnMount: false,
+    }
+  );
 
-  const getProducts = async () => {
-    const client = new FakeProductsClient(); // TODO: Fix it to real data
-    return await client.products();
-  };
-
-  useEffect(() => {
-    getProducts().then((data: Product[]) => {
-      const item = data.find((item) => item.id === id);
-      setProduct(item);
-    });
-  }, []);
-
-  if (!product) {
+  if (isLoading || !product) {
     return <Loading />;
   }
 
