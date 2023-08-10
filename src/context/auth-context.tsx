@@ -41,6 +41,7 @@ type AuthServiceProvider = 'google' | 'github';
 export type AuthStore = AuthState & {
   login: (serviceProvider: AuthServiceProvider) => void;
   logout: () => void;
+  uid: string | null;
 };
 
 export const AuthContext = createContext<AuthState>(initialState);
@@ -100,6 +101,7 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthStore>(
     () => ({
       user,
+      uid: user && user.uid,
       isLoading,
       login,
       logout,
