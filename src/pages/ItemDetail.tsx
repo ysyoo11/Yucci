@@ -1,16 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Loading from '../components/core/Loading';
 import Button from '../components/ui/Button';
 import { QUERY_KEY } from '../constant/query-key';
+import { useAssertiveStore } from '../context/assertives';
+import { useAuth } from '../context/auth-context';
 import { useCartContext } from '../context/cart-context';
 import { getProductDetail } from '../service/firebase';
+import { Product } from '../types/product';
 import displayPrice from '../utils/display-price';
 
 export default function ItemDetail() {
+  const navigate = useNavigate();
   const [option, setOption] = useState<string | undefined>(undefined);
+  const { uid } = useAuth();
   const { id } = useParams();
   const { data: product, isLoading } = useQuery(
     [QUERY_KEY.PRODUCT_DETAIL, id],
@@ -20,7 +25,32 @@ export default function ItemDetail() {
       refetchOnMount: false,
     }
   );
-  const { addToCart } = useCartContext();
+  const { addOrUpdateCart, hasSameItemInCart } = useCartContext();
+  const { showNoti } = useAssertiveStore();
+
+  const handleAddToCart = useCallback(
+    (product: Product) => {
+      if (!uid) {
+        navigate('/signin');
+        return;
+      }
+      if (option) {
+        if (
+          hasSameItemInCart({ ...product, quantity: 1, selectedOption: option })
+        ) {
+          showNoti({ title: 'The item is already in the cart.' });
+          return;
+        }
+        addOrUpdateCart.mutate({
+          ...product,
+          selectedOption: option,
+          quantity: 1,
+        });
+        showNoti({ title: 'The item is added to the cart.' });
+      }
+    },
+    [option, uid]
+  );
 
   useEffect(() => {
     if (product) {
@@ -59,7 +89,7 @@ export default function ItemDetail() {
           <Button
             full
             className='mt-10'
-            onClick={() => option && addToCart(product, option)}
+            onClick={() => handleAddToCart(product)}
             disabled={option === undefined}
           >
             add to cart
