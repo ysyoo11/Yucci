@@ -17,16 +17,16 @@ function App() {
   return (
     <AssertiveStoreProvider>
       <UserAuthProvider>
-        <CartProvider>
-          <HeaderProvider>
-            {location.pathname === '/' ? <HomeHeader /> : <Header />}
-            <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <CartProvider>
+            <HeaderProvider>
+              {location.pathname === '/' ? <HomeHeader /> : <Header />}
               <BaseLayout>
                 <Outlet />
               </BaseLayout>
-            </QueryClientProvider>
-          </HeaderProvider>
-        </CartProvider>
+            </HeaderProvider>
+          </CartProvider>
+        </QueryClientProvider>
       </UserAuthProvider>
     </AssertiveStoreProvider>
   );

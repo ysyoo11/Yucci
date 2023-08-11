@@ -1,106 +1,152 @@
 import {
-  Dispatch,
+  UseMutationResult,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import {
   ReactNode,
-  SetStateAction,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
-  useState,
 } from 'react';
 
-import { LOCAL_STORAGE_KEY } from '../constant/local-storage-key';
+import { QUERY_KEY } from '../constant/query-key';
+import {
+  addOrUpdateCart as addOrUpdateCartFB,
+  getCart,
+  removeFromCart as removeFromCartFB,
+} from '../service/firebase';
 import { Product } from '../types/product';
 
-type CartItem = Product & {
+import { useAssertiveStore } from './assertives';
+import { useAuth } from './auth-context';
+
+export type CartItem = Product & {
   quantity: number;
   selectedOption: string;
 };
 
 type CartState = {
-  cartItems: CartItem[];
+  cartItems?: CartItem[];
+  isLoading: boolean;
+  error: any;
 };
 
 const initialState: CartState = {
   cartItems: [],
+  isLoading: false,
+  error: null,
 };
 
 export const CartContext = createContext<CartState>(initialState);
 
 export type CartStore = CartState & {
-  setCartItems: Dispatch<SetStateAction<CartItem[]>>;
-  addToCart: (product: Product, selectedOption: string) => void;
-  deleteFromCart: (product: Product) => void;
+  addOrUpdateCart: UseMutationResult<void, unknown, CartItem, unknown>;
+  removeFromCart: UseMutationResult<
+    void,
+    unknown,
+    {
+      productId: string;
+      productOption: string;
+    },
+    unknown
+  >;
+  getCart: (userId: string) => Promise<CartItem[]>;
   total: {
     quantity: number;
     price: number;
   };
+  hasSameItemInCart: (product: CartItem) => boolean;
 };
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { showNoti } = useAssertiveStore();
+  const { user, uid } = useAuth();
+  const queryClient = useQueryClient();
+  const {
+    data: cartItems,
+    error,
+    isLoading,
+  } = useQuery([QUERY_KEY.CART_ITEMS, uid], () => getCart(uid || ''), {
+    enabled: !!uid,
+  });
 
-  const total = useMemo(() => {
-    const quantity = cartItems
-      .map(({ quantity }) => quantity)
-      .reduce((a, b) => a + b, 0);
-    const price = cartItems
-      .map(({ price, quantity }) => price * quantity)
-      .reduce((a, b) => a + b, 0);
-    return { quantity, price };
-  }, [cartItems]);
+  const total = useMemo(
+    () =>
+      cartItems
+        ? {
+            quantity: cartItems
+              .map(({ quantity }) => quantity)
+              .reduce((a, b) => a + b, 0),
+            price: cartItems
+              .map(({ price, quantity }) => price * quantity)
+              .reduce((a, b) => a + b, 0),
+          }
+        : {
+            quantity: 0,
+            price: 0,
+          },
+    [cartItems]
+  );
 
-  const addToCart = (product: Product, selectedOption: string) => {
-    if (cartItems.find((item) => item.id === product.id)) {
-      setCartItems((prev) =>
-        prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      );
-      return;
+  const hasSameItemInCart = useCallback(
+    (product: CartItem) =>
+      cartItems &&
+      cartItems.find(
+        ({ id, selectedOption }) =>
+          id === product.id && selectedOption === product.selectedOption
+      )
+        ? true
+        : false,
+    [cartItems]
+  );
+
+  const addOrUpdateCart = useMutation(
+    (product: CartItem) => addOrUpdateCartFB(uid || '', product),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([QUERY_KEY.CART_ITEMS, uid]);
+      },
     }
-    setCartItems((prev) => [
-      ...prev,
-      { ...product, quantity: 1, selectedOption },
-    ]);
-  };
+  );
 
-  const deleteFromCart = (product: Product) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== product.id));
-  };
+  const removeFromCart = useMutation(
+    ({
+      productId,
+      productOption,
+    }: {
+      productId: string;
+      productOption: string;
+    }) => {
+      showNoti({ title: 'The item is removed from the cart.' });
+      return removeFromCartFB(uid || '', productId, productOption);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([QUERY_KEY.CART_ITEMS, uid]);
+      },
+    }
+  );
 
   useEffect(() => {
-    const storedValue = window.localStorage.getItem(
-      LOCAL_STORAGE_KEY.CART_ITEMS
-    );
-    if (storedValue) {
-      const parsedValue = JSON.parse(storedValue) as CartItem[];
-      const parsedItems = parsedValue.map((product) => ({
-        ...product,
-        price: +product.price,
-      }));
-      setCartItems(parsedItems);
-      return;
+    if (user) {
+      getCart(user.uid);
     }
-    setCartItems([]);
-  }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEY.CART_ITEMS,
-      JSON.stringify(cartItems)
-    );
-  }, [cartItems]);
+  }, [user]);
 
   const value = useMemo<CartStore>(
     () => ({
       cartItems,
-      setCartItems,
-      addToCart,
-      deleteFromCart,
+      error,
+      isLoading,
+      addOrUpdateCart,
+      removeFromCart,
+      getCart,
       total,
+      hasSameItemInCart,
     }),
     [cartItems, total]
   );

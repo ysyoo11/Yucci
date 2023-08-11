@@ -2,6 +2,7 @@ import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
 import { useKeenSlider } from 'keen-slider/react';
 import { useEffect, useState } from 'react';
 import 'keen-slider/keen-slider.min.css';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '../ui/Button';
 
@@ -28,6 +29,7 @@ export default function HeroSection() {
   const [opacities, setOpacities] = useState<number[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const navigate = useNavigate();
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     slides: images.length,
     initial: 0,
@@ -104,11 +106,7 @@ export default function HeroSection() {
         <h2 className='cursor-default text-center text-4xl'>
           {images[currentSlide].title}
         </h2>
-        <Button
-          onClick={() => {
-            // TODO:
-          }}
-        >
+        <Button onClick={() => navigate('/products')}>
           Explore the collection
         </Button>
       </div>

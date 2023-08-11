@@ -6,8 +6,8 @@ import NumberInput from '../../components/ui/NumberInput';
 import Textarea from '../../components/ui/TextArea';
 import TextInput from '../../components/ui/TextInput';
 import { useAssertiveStore } from '../../context/assertives';
+import useProducts from '../../hooks/use-products';
 import { uploadToCloudinary } from '../../service/cloudinary';
-import { addProduct } from '../../service/firebase';
 import { ProductCategory, ProductInfo, categories } from '../../types/product';
 import { getImageURL } from '../../utils/image';
 
@@ -29,6 +29,7 @@ export default function NewProduct() {
   const [previewURL, setPreviewURL] = useState('');
   const [loading, setLoading] = useState<LoadingVariant>(null);
   const { showNoti, showAlert } = useAssertiveStore();
+  const { addNewProduct } = useProducts();
 
   const showPreview = useCallback(async () => {
     if (!imageFile) {
@@ -53,10 +54,9 @@ export default function NewProduct() {
     e.preventDefault();
     try {
       setLoading('submit');
-      const imageURL = await uploadToCloudinary(imageFile);
-      await addProduct({ ...productInfo, imageURL }).then(() =>
-        showNoti({ title: 'The product is added' })
-      );
+      await uploadToCloudinary(imageFile)
+        .then((imageURL) => addNewProduct.mutate({ productInfo, imageURL }))
+        .then(() => showNoti({ title: 'The product is added' }));
     } catch (e: any) {
       showAlert(e);
       console.error(e);
@@ -94,7 +94,7 @@ export default function NewProduct() {
       >
         <input
           type='file'
-          accept='image/png, image/jpeg, image/jpg, image/webp, image/heic'
+          accept='image/png, image/jpeg, image/jpg, image/webp, image/heic, image/avif'
           className='w-full border border-black p-6 disabled:bg-gray-300'
           onChange={(e) => {
             setImageFile(null);
