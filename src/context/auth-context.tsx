@@ -48,7 +48,7 @@ export const AuthContext = createContext<AuthState>(initialState);
 
 export function UserAuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<MyUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { showNoti, showAlert } = useAssertiveStore();
 
   const auth = getAuth(firebaseApp);
