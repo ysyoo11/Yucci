@@ -41,13 +41,14 @@ type AuthServiceProvider = 'google' | 'github';
 export type AuthStore = AuthState & {
   login: (serviceProvider: AuthServiceProvider) => void;
   logout: () => void;
+  uid: string | null;
 };
 
 export const AuthContext = createContext<AuthState>(initialState);
 
 export function UserAuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<MyUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { showNoti, showAlert } = useAssertiveStore();
 
   const auth = getAuth(firebaseApp);
@@ -100,6 +101,7 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthStore>(
     () => ({
       user,
+      uid: user && user.uid,
       isLoading,
       login,
       logout,

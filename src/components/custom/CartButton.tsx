@@ -10,7 +10,7 @@ import Button from '../ui/Button';
 export default function CartButton() {
   const {
     cartItems,
-    deleteFromCart,
+    removeFromCart,
     total: { quantity },
   } = useCartContext();
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function CartButton() {
         <>
           <Menu.Button className='relative'>
             <ShoppingBagIcon className='h-5 w-5 stroke-[1.5px]' />
-            {cartItems.length > 0 && (
+            {cartItems && cartItems.length > 0 && (
               <div className='absolute -right-1 -top-1'>
                 <div className='relative h-3 w-3 rounded-full bg-gray-800'>
                   <span
@@ -55,23 +55,26 @@ export default function CartButton() {
                   <XMarkIcon className='h-4 w-4 stroke-2' />
                 </button>
               </div>
-              {cartItems.length === 0 && (
+              {!cartItems || (cartItems && cartItems.length === 0) ? (
                 <div className='w-full py-20'>
                   <p className='text-center'>Your shopping bag is empty.</p>
                 </div>
-              )}
-              {cartItems.length > 0 && (
+              ) : null}
+              {cartItems && cartItems.length > 0 && (
                 <>
                   <ul className='h-full max-h-[18rem] overflow-y-auto border-y border-white py-2'>
-                    {cartItems.map((item) => (
-                      <li key={item.id} className='relative w-full p-2'>
+                    {cartItems.map((item, idx) => (
+                      <li
+                        key={`${item.id}-${item.selectedOption}-${idx}`}
+                        className='relative w-full p-2'
+                      >
                         <div className='flex w-full'>
                           <div className='basis-2/5'>
                             <img src={item.imageURL} alt={item.title} />
                           </div>
                           <div className='basis-3/5 space-y-2'>
                             <p className='text-sm font-bold uppercase'>
-                              {item.title}
+                              {item.title} ({item.selectedOption})
                             </p>
                             <span className='block text-lg'>
                               {displayPrice(item.price)}
@@ -83,7 +86,12 @@ export default function CartButton() {
                         </div>
                         <button
                           className='absolute right-2 top-1/3'
-                          onClick={() => deleteFromCart(item)}
+                          onClick={() =>
+                            removeFromCart.mutate({
+                              productId: item.id,
+                              productOption: item.selectedOption,
+                            })
+                          }
                         >
                           <XMarkIcon className='h-4 w-4 stroke-2 text-gray-500 transition-colors hover:text-gray-700' />
                         </button>

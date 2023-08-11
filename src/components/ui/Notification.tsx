@@ -16,6 +16,7 @@ export interface NotificationProps {
   className?: string;
 }
 
+// TODO: Re-style CSS in Gucci style
 export function Notification({
   variant = 'default',
   show,

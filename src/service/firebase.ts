@@ -1,7 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { get, getDatabase, ref, set } from 'firebase/database';
+import { get, getDatabase, ref, remove, set } from 'firebase/database';
 import { v4 as uuid } from 'uuid';
 
+import { CartItem } from '../context/cart-context';
 import { ENV } from '../utils/env';
 
 import type { Product, ProductCategory, ProductInfo } from '../types/product';
@@ -59,6 +60,28 @@ export async function getProducts(category?: ProductCategory) {
 export async function getProductDetail(id: string) {
   return await getProducts() //
     .then((products) => products.find((item) => item.id === id));
+}
+
+export async function addOrUpdateCart(userId: string, product: CartItem) {
+  return set(
+    ref(db, `carts/${userId}/${product.id}_${product.selectedOption}`),
+    product
+  );
+}
+
+export async function removeFromCart(
+  userId: string,
+  productId: string,
+  productOption: string
+) {
+  return remove(ref(db, `carts/${userId}/${productId}_${productOption}`));
+}
+
+export async function getCart(userId: string): Promise<CartItem[]> {
+  return get(ref(db, `carts/${userId}`)) //
+    .then((snapshot) =>
+      snapshot.exists() ? Object.values(snapshot.val()) : []
+    );
 }
 
 export default firebaseApp;

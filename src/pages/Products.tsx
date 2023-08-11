@@ -8,13 +8,13 @@ import { useAssertiveStore } from '../context/assertives';
 import useProducts from '../hooks/use-products';
 import displayPrice from '../utils/display-price';
 
-import type { ProductCategory } from '../types/product';
-
 export default function Products() {
   const navigate = useNavigate();
   const { category } = useParams();
   const { showNoti } = useAssertiveStore();
-  const { products, isLoading } = useProducts(category as ProductCategory);
+  const {
+    productsQuery: { data: products, isLoading },
+  } = useProducts();
 
   const handleLikeClick = (e: MouseEvent) => {
     e.stopPropagation();
