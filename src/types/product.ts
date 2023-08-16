@@ -27,4 +27,5 @@ export type Order = {
   id: string;
   items: CartItem[];
   userInfo: UserInfo;
+  isCreatedAt: string;
 };
