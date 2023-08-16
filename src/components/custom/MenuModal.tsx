@@ -110,8 +110,8 @@ export default function MenuModal({ isOpen, onClose }: Props) {
                           <button
                             className='flex items-center justify-between py-2 underline underline-offset-4 hover:no-underline'
                             onClick={() => {
+                              onClose();
                               navigate(user ? href : '/signin');
-                              onClose;
                             }}
                           >
                             <span className='block font-bold'>{name}</span>

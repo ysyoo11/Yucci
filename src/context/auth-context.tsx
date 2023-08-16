@@ -65,7 +65,7 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
       default:
         throw new Error('The service provider is not available');
     }
-    await signInWithPopup(auth, authServiceProvider).catch(showAlert);
+    await signInWithPopup(auth, authServiceProvider).catch(console.error);
   };
 
   const logout = () => {
