@@ -27,5 +27,5 @@ export default function BaseLayout({ children }: { children: ReactNode }) {
     }
   }, [user, location.pathname]);
 
-  return <main className='mt-16'>{children}</main>;
+  return <main className='mt-20'>{children}</main>;
 }
