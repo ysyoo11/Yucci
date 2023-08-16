@@ -21,7 +21,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className='w-full bg-black px-4 py-14 md:px-8 lg:px-16'>
+    <footer className='mt-20 w-full bg-black px-4 py-14 md:px-8 lg:px-16'>
       <div className='mx-auto w-full max-w-7xl'>
         <div className='flex flex-col space-x-6 space-x-reverse lg:flex-row-reverse'>
           <div className='space-y-6 lg:w-full'>
