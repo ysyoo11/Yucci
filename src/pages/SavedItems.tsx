@@ -35,7 +35,7 @@ export default function SavedItems() {
 
   return (
     <>
-      <div className='flex flex-col items-center border-b pb-16 pt-4'>
+      <div className='flex flex-col items-center pb-16 pt-4'>
         <h1 className='text-3xl font-light uppercase tracking-wide lg:text-7xl'>
           saved items
         </h1>
@@ -49,7 +49,7 @@ export default function SavedItems() {
       </div>
       <section>
         {savedItems && savedItems.length > 0 && (
-          <ul className='grid w-full grid-cols-2 gap-px bg-gray-300 md:grid-cols-3 lg:grid-cols-4'>
+          <ul className='grid w-full grid-cols-2 gap-px border-y bg-gray-300 md:grid-cols-3 lg:grid-cols-4'>
             {savedItems.map((item) => (
               <li
                 key={item.id}
