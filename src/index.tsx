@@ -3,21 +3,14 @@ import { createRoot } from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import App from './App';
-import About from './pages/About';
-import AccountSettings from './pages/AccountSettings';
 import NewProduct from './pages/admin/NewProduct';
-import Careers from './pages/Careers';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
-import Contact from './pages/Contact';
-import FAQs from './pages/FAQs';
 import Home from './pages/Home';
 import ItemDetail from './pages/ItemDetail';
-import MyAccount from './pages/MyAccount';
 import MyOrders from './pages/MyOrders';
 import NotFound from './pages/NotFound';
 import OrderDetail from './pages/OrderDetail';
-import PrivacyCookiePolicy from './pages/PrivacyCookiePolicy';
 import Products from './pages/Products';
 import SavedItems from './pages/SavedItems';
 import Search from './pages/Search';
@@ -55,20 +48,12 @@ const router = createBrowserRouter([
         element: <NewProduct />,
       },
       {
-        path: '/my-account',
-        element: <MyAccount />,
-      },
-      {
         path: '/my-orders',
         element: <MyOrders />,
       },
       {
         path: '/my-orders/:id',
         element: <OrderDetail />,
-      },
-      {
-        path: '/account-settings',
-        element: <AccountSettings />,
       },
       {
         path: '/saved-items',
@@ -85,26 +70,6 @@ const router = createBrowserRouter([
       {
         path: '/search/:q',
         element: <Search />,
-      },
-      {
-        path: '/contact',
-        element: <Contact />,
-      },
-      {
-        path: '/faq',
-        element: <FAQs />,
-      },
-      {
-        path: '/about',
-        element: <About />,
-      },
-      {
-        path: '/careers',
-        element: <Careers />,
-      },
-      {
-        path: '/privacy-cookie-policy',
-        element: <PrivacyCookiePolicy />,
       },
     ],
   },

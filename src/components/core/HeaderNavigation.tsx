@@ -19,16 +19,8 @@ type ModalType = 'trolley' | 'search' | 'menu';
 
 const userMenu = [
   {
-    name: 'my account',
-    href: 'my-account',
-  },
-  {
     name: 'my orders',
     href: '/my-orders',
-  },
-  {
-    name: 'account settings',
-    href: '/account-settings',
   },
   {
     name: 'saved items',
