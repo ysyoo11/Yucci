@@ -3,4 +3,5 @@ export const QUERY_KEY = {
   PRODUCT_DETAIL: 'product-detail',
   CART_ITEMS: 'cart_items',
   SEARCH: 'search',
+  SAVED_ITEMS: 'saved-items',
 } as const;
