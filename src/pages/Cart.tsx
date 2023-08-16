@@ -1,9 +1,12 @@
+import { HeartIcon } from '@heroicons/react/24/outline';
+import { MouseEvent, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Banner from '../components/custom/Banner';
 import Button from '../components/ui/Button';
 import { useAuth } from '../context/auth-context';
 import { CartItem, useCartContext } from '../context/cart-context';
+import useSavedItems from '../hooks/use-saved-items';
 import displayPrice from '../utils/display-price';
 
 const MAX_PURCHASE_QTY = 4;
@@ -15,6 +18,7 @@ export default function Cart() {
     total: { price },
     addOrUpdateCart,
   } = useCartContext();
+  const { likeItem } = useSavedItems();
   const { uid } = useAuth();
 
   const navigate = useNavigate();
@@ -30,6 +34,16 @@ export default function Cart() {
       productOption: item.selectedOption,
     });
   };
+
+  const handleLikeClick = useCallback(
+    (e: MouseEvent, item: CartItem) => {
+      e.stopPropagation();
+      if (!uid) return;
+      const { quantity, selectedOption, ...product } = item;
+      likeItem.mutate({ uid, product });
+    },
+    [uid, likeItem]
+  );
 
   return (
     <div className='pb-20'>
@@ -81,12 +95,22 @@ export default function Cart() {
                         <h6 className='text-center text-sm font-bold lg:hidden'>
                           ({item.selectedOption})
                         </h6>
-                        <button
-                          className='mt-6 hidden text-sm font-bold uppercase underline hover:no-underline lg:block'
-                          onClick={() => removeItem(item)}
-                        >
-                          remove
-                        </button>
+                        <div className='hidden items-center space-x-2 lg:flex'>
+                          <button
+                            className='text-sm font-bold uppercase underline hover:no-underline'
+                            onClick={() => removeItem(item)}
+                          >
+                            remove
+                          </button>
+                          <span>|</span>
+                          <button
+                            className='hidden items-center space-x-0.5 text-sm font-bold uppercase underline hover:no-underline lg:flex'
+                            onClick={(e) => handleLikeClick(e, item)}
+                          >
+                            <HeartIcon className='h-4 w-4 translate-y-px' />
+                            <span>saved items</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                     <div className='flex flex-col lg:flex-col-reverse'>
@@ -115,12 +139,22 @@ export default function Cart() {
                         </select>
                       </div>
                     </div>
-                    <button
-                      className='mt-6 text-sm font-bold uppercase underline hover:no-underline lg:hidden'
-                      onClick={() => removeItem(item)}
-                    >
-                      remove
-                    </button>
+                    <div className='mt-6 flex space-x-2 lg:hidden'>
+                      <button
+                        className='text-sm font-bold uppercase underline hover:no-underline'
+                        onClick={() => removeItem(item)}
+                      >
+                        remove
+                      </button>
+                      <span>|</span>
+                      <button
+                        className='flex items-center space-x-0.5 text-sm font-bold uppercase underline hover:no-underline'
+                        onClick={(e) => handleLikeClick(e, item)}
+                      >
+                        <HeartIcon className='h-4 w-4 translate-y-px' />
+                        <span>saved items</span>
+                      </button>
+                    </div>
                   </div>
                 </li>
               ))}
