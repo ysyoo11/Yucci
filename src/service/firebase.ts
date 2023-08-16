@@ -3,9 +3,15 @@ import { get, getDatabase, ref, remove, set } from 'firebase/database';
 import { v4 as uuid } from 'uuid';
 
 import { CartItem } from '../context/cart-context';
+import { type UserInfo } from '../pages/Checkout';
 import { ENV } from '../utils/env';
 
-import type { Product, ProductCategory, ProductInfo } from '../types/product';
+import type {
+  Order,
+  Product,
+  ProductCategory,
+  ProductInfo,
+} from '../types/product';
 
 const firebaseConfig = {
   apiKey: ENV.REACT_APP_FIREBASE_API_KEY,
@@ -84,6 +90,10 @@ export async function removeFromCart(
   return remove(ref(db, `carts/${userId}/${productId}_${productOption}`));
 }
 
+export async function emptyCart(userId: string) {
+  return remove(ref(db, `carts/${userId}`));
+}
+
 export async function getCart(userId: string): Promise<CartItem[]> {
   return get(ref(db, `carts/${userId}`)) //
     .then((snapshot) =>
@@ -104,6 +114,26 @@ export async function getSavedItems(userId: string): Promise<Product[]> {
 
 export async function removeFromSavedItems(userId: string, productId: string) {
   return remove(ref(db, `saved-items/${userId}/${productId}`));
+}
+
+export async function addOrder(
+  userId: string,
+  userInfo: UserInfo,
+  items: CartItem[]
+) {
+  const id = uuid();
+  return set(ref(db, `orders/${userId}/${id}`), {
+    id,
+    userInfo,
+    items,
+  });
+}
+
+export async function getOrders(userId: string): Promise<Order[]> {
+  return get(ref(db, `orders/${userId}`)) //
+    .then((snapshot) =>
+      snapshot.exists() ? Object.values(snapshot.val()) : []
+    );
 }
 
 export default firebaseApp;

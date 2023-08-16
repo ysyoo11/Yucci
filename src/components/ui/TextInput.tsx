@@ -47,6 +47,7 @@ export default function TextInput({
         onChange={onChange}
         disabled={disabled}
         name={name}
+        required={!isOptional}
       />
       <label
         htmlFor={id}
