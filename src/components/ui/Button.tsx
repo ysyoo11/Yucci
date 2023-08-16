@@ -1,8 +1,10 @@
 import clsx from 'clsx';
 
 const colorClasses = {
-  black: 'bg-black text-white transition-opacity hover:opacity-80',
-  white: 'bg-white hover:bg-gray-100 transition-colors border border-black',
+  black:
+    'bg-black text-white transition-opacity hover:opacity-80 disabled:hover:opacity-100',
+  white:
+    'bg-white hover:bg-gray-100 transition-colors border border-black disabled:hover:opacity-100',
 } as const;
 
 interface Props {
