@@ -30,23 +30,6 @@
       {
         "title": "Privacy & Cookie Policy",
         "href": "/privacy-cookie-policy"
-      },
-      {
-        "title": "Corporate Information",
-        "href": "/corporate-information"
-      }
-    ]
-  },
-  {
-    "title": "yucci services",
-    "list": [
-      {
-        "title": "Discover Our Services",
-        "href": "/discover-service"
-      },
-      {
-        "title": "Book an Appointment",
-        "href": "/book-appointment"
       }
     ]
   }
