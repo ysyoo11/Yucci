@@ -40,7 +40,12 @@ export default function Cart() {
         </h2>
         <hr />
         <div className='px-10'>
-          <Button full size='sm' onClick={() => navigate('/checkout')}>
+          <Button
+            full
+            size='sm'
+            onClick={() => navigate('/checkout')}
+            disabled={!cartItems || (cartItems && cartItems.length < 1)}
+          >
             checkout
           </Button>
         </div>
@@ -51,6 +56,9 @@ export default function Cart() {
             your selections
           </h6>
           <hr className='my-4 hidden lg:block' />
+          {cartItems && cartItems.length === 0 && (
+            <p className='py-20 text-center text-lg'>Your cart is empty.</p>
+          )}
           {cartItems && (
             <ul className='divide-y'>
               {cartItems.map((item, idx) => (
@@ -136,7 +144,12 @@ export default function Cart() {
               <span className='text-xl font-light'>{displayPrice(price)}</span>
             </div>
           </div>
-          <Button full size='sm' onClick={() => navigate('/checkout')}>
+          <Button
+            full
+            size='sm'
+            onClick={() => navigate('/checkout')}
+            disabled={!cartItems || (cartItems && cartItems.length < 1)}
+          >
             checkout
           </Button>
         </div>
