@@ -1,3 +1,6 @@
+import { CartItem } from '../context/cart-context';
+import { UserInfo } from '../pages/Checkout';
+
 export const categories = ['women', 'men'] as const;
 export type ProductCategory = (typeof categories)[number];
 
@@ -18,4 +21,10 @@ export type Product = {
   options: string[];
   description: string;
   category: ProductCategory;
+};
+
+export type Order = {
+  id: string;
+  items: CartItem[];
+  userInfo: UserInfo;
 };
