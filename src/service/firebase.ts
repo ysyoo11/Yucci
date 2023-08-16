@@ -57,6 +57,13 @@ export async function getProducts(category?: ProductCategory) {
     });
 }
 
+export async function searchProducts(keyword: string) {
+  return await getProducts() //
+    .then((products) =>
+      products.filter((item) => item.title.toLowerCase().includes(keyword))
+    );
+}
+
 export async function getProductDetail(id: string) {
   return await getProducts() //
     .then((products) => products.find((item) => item.id === id));

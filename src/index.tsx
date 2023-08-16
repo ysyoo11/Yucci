@@ -14,6 +14,7 @@ import MyOrders from './pages/MyOrders';
 import NotFound from './pages/NotFound';
 import Products from './pages/Products';
 import SavedItems from './pages/SavedItems';
+import Search from './pages/Search';
 import SignIn from './pages/SignIn';
 
 import './index.css';
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: '/checkout',
         element: <Checkout />,
+      },
+      {
+        path: '/search/:q',
+        element: <Search />,
       },
     ],
   },
