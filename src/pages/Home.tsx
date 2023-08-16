@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <div
-      className={clsx('h-[3000px] transform duration-700 ease-in-out', {
+      className={clsx('transform pb-20 duration-700 ease-in-out', {
         'mt-52 sm:mt-[20vh] md:mt-[24vh] lg:mt-[28vh]': !logoShrink,
         'mt-24': logoShrink,
       })}

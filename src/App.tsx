@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Outlet, useLocation } from 'react-router-dom';
 
+import Footer from './components/core/Footer';
 import Header from './components/core/Header';
 import HomeHeader from './components/core/HomeHeader';
 import BaseLayout from './components/layout/BaseLayout';
@@ -20,10 +21,13 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <CartProvider>
             <HeaderProvider>
-              {location.pathname === '/' ? <HomeHeader /> : <Header />}
-              <BaseLayout>
-                <Outlet />
-              </BaseLayout>
+              <div className='flex h-full min-h-screen flex-col justify-between'>
+                {location.pathname === '/' ? <HomeHeader /> : <Header />}
+                <BaseLayout>
+                  <Outlet />
+                </BaseLayout>
+                <Footer />
+              </div>
             </HeaderProvider>
           </CartProvider>
         </QueryClientProvider>
