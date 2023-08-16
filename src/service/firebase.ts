@@ -126,6 +126,7 @@ export async function addOrder(
     id,
     userInfo,
     items,
+    isCreatedAt: new Date().toString(),
   });
 }
 

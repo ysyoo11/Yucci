@@ -16,6 +16,7 @@ import ItemDetail from './pages/ItemDetail';
 import MyAccount from './pages/MyAccount';
 import MyOrders from './pages/MyOrders';
 import NotFound from './pages/NotFound';
+import OrderDetail from './pages/OrderDetail';
 import PrivacyCookiePolicy from './pages/PrivacyCookiePolicy';
 import Products from './pages/Products';
 import SavedItems from './pages/SavedItems';
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: '/my-orders',
         element: <MyOrders />,
+      },
+      {
+        path: '/my-orders/:id',
+        element: <OrderDetail />,
       },
       {
         path: '/account-settings',

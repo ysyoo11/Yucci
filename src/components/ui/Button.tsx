@@ -14,7 +14,7 @@ interface Props {
   disabled?: boolean;
   onClick?: () => void;
   color?: keyof typeof colorClasses;
-  size?: 'sm' | 'base' | 'lg';
+  size?: 'xs' | 'sm' | 'base' | 'lg';
 }
 
 export default function Button({
@@ -34,6 +34,7 @@ export default function Button({
         colorClasses[color],
         {
           'w-full': full,
+          'text-xs': size === 'xs',
           'text-sm': size === 'sm',
           'text-base': size === 'base',
           'text-lg': size === 'lg',
