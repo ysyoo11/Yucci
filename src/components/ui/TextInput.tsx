@@ -1,6 +1,13 @@
 import clsx from 'clsx';
 import { ChangeEvent } from 'react';
 
+const colorClasses = {
+  black:
+    'border border-black text-gray-900 focus:border-gray-800 focus:outline-black disabled:bg-gray-300',
+  white:
+    'border-b border-gray-700 text-white focus:border-white focus:outline-none',
+} as const;
+
 type Props = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   id: string;
@@ -9,6 +16,7 @@ type Props = {
   placeholder: string;
   disabled?: boolean;
   name: string;
+  color?: keyof typeof colorClasses;
 };
 
 export default function TextInput({
@@ -19,6 +27,7 @@ export default function TextInput({
   placeholder,
   disabled = false,
   name,
+  color = 'black',
 }: Props) {
   return (
     <div
@@ -29,7 +38,10 @@ export default function TextInput({
       <input
         type='text'
         id={id}
-        className='peer block w-full appearance-none border border-black bg-transparent px-2 pb-4 pt-6 text-base text-gray-900 focus:border-gray-800 focus:outline-black disabled:bg-gray-300'
+        className={clsx(
+          'peer block w-full appearance-none bg-transparent px-2 pb-4 pt-6 text-base',
+          colorClasses[color]
+        )}
         placeholder=' '
         value={value}
         onChange={onChange}

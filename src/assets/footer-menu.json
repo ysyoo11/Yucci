@@ -1,0 +1,36 @@
+[
+  {
+    "title": "my orders",
+    "list": [
+      {
+        "title": "Contact Us",
+        "href": "/contact"
+      },
+      {
+        "title": "My Order",
+        "href": "/my-orders"
+      },
+      {
+        "title": "FAQs",
+        "href": "/faq"
+      }
+    ]
+  },
+  {
+    "title": "the company",
+    "list": [
+      {
+        "title": "About Yucci",
+        "href": "/about"
+      },
+      {
+        "title": "Careers",
+        "href": "/careers"
+      },
+      {
+        "title": "Privacy & Cookie Policy",
+        "href": "/privacy-cookie-policy"
+      }
+    ]
+  }
+]
