@@ -91,4 +91,19 @@ export async function getCart(userId: string): Promise<CartItem[]> {
     );
 }
 
+export async function saveItem(userId: string, product: Product) {
+  return set(ref(db, `saved-items/${userId}/${product.id}`), product);
+}
+
+export async function getSavedItems(userId: string): Promise<Product[]> {
+  return get(ref(db, `saved-items/${userId}`)) //
+    .then((snapshot) =>
+      snapshot.exists() ? Object.values(snapshot.val()) : []
+    );
+}
+
+export async function removeFromSavedItems(userId: string, productId: string) {
+  return remove(ref(db, `saved-items/${userId}/${productId}`));
+}
+
 export default firebaseApp;
