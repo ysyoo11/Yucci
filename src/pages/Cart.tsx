@@ -50,8 +50,8 @@ export default function Cart() {
           </Button>
         </div>
       </div>
-      <div className='lg:mt-10 lg:flex'>
-        <section className='mx-auto mt-8 w-full max-w-7xl border-y border-gray-300 py-4 lg:mt-0 lg:border-y-0 lg:px-6'>
+      <div className='mx-auto w-full max-w-7xl lg:mt-10 lg:flex'>
+        <section className='mt-8 w-full border-y border-gray-300 py-4 lg:mt-0 lg:border-y-0 lg:px-6'>
           <h6 className='hidden text-xs font-bold uppercase lg:block'>
             your selections
           </h6>
