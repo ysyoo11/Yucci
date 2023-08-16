@@ -18,6 +18,7 @@ import {
   addOrUpdateCart as addOrUpdateCartFB,
   getCart,
   removeFromCart as removeFromCartFB,
+  emptyCart as emptyCartFB,
 } from '../service/firebase';
 import { Product } from '../types/product';
 
@@ -51,6 +52,14 @@ export type CartStore = CartState & {
     {
       productId: string;
       productOption: string;
+    },
+    unknown
+  >;
+  emptyCart: UseMutationResult<
+    void,
+    unknown,
+    {
+      uid: string;
     },
     unknown
   >;
@@ -131,6 +140,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   );
 
+  const emptyCart = useMutation(
+    ({ uid }: { uid: string }) => emptyCartFB(uid),
+    {
+      onSuccess: () =>
+        queryClient.invalidateQueries([QUERY_KEY.CART_ITEMS, uid]),
+    }
+  );
+
   useEffect(() => {
     if (user) {
       getCart(user.uid);
@@ -144,6 +161,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       isLoading,
       addOrUpdateCart,
       removeFromCart,
+      emptyCart,
       getCart,
       total,
       hasSameItemInCart,

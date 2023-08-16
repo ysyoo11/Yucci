@@ -4,11 +4,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/auth-context';
 
 const userOnlyPath = [
-  '/my-orders',
-  '/account-settings',
-  '/my-account',
-  '/saved-items',
   '/admin/new-product',
+  '/account-settings',
+  '/cart',
+  '/checkout',
+  '/my-account',
+  '/my-orders',
+  '/saved-items',
 ];
 
 const adminOnlyPath = ['/admin/new-product'];
