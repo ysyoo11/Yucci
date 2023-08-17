@@ -99,20 +99,16 @@ export default function CartButton() {
                     ))}
                   </ul>
                   <div className='space-y-4 border-t border-gray-300 px-6 py-4'>
-                    <Menu.Item>
-                      <Button full onClick={() => navigate('/checkout')}>
-                        checkout
-                      </Button>
-                    </Menu.Item>
-                    <Menu.Item>
-                      <Button
-                        full
-                        color='white'
-                        onClick={() => navigate('/cart')}
-                      >
-                        view shopping bag
-                      </Button>
-                    </Menu.Item>
+                    <Button full onClick={() => navigate('/checkout')}>
+                      checkout
+                    </Button>
+                    <Button
+                      full
+                      color='white'
+                      onClick={() => navigate('/cart')}
+                    >
+                      view shopping bag
+                    </Button>
                   </div>
                 </>
               )}

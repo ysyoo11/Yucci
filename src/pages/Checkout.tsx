@@ -58,7 +58,12 @@ export default function Checkout() {
     }
   }, [cartItems, isOrderPlaced]);
 
-  if (!user || isLoading) return <Loading />;
+  if (!user || isLoading)
+    return (
+      <div className='min-h-[70vh] w-full'>
+        <Loading />
+      </div>
+    );
 
   if (isOrderPlaced)
     return (

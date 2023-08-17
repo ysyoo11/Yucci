@@ -138,10 +138,6 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   const value = useMemo<AuthStore>(
     () => ({
       user,
