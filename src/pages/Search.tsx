@@ -18,7 +18,11 @@ export default function Search() {
   );
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div className='min-h-[70vh] w-full'>
+        <Loading />
+      </div>
+    );
   }
 
   if (products && products.length === 0) {

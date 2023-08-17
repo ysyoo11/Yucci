@@ -59,7 +59,11 @@ export default function ItemDetail() {
   }, [product]);
 
   if (isLoading || !product) {
-    return <Loading />;
+    return (
+      <div className='min-h-[70vh] w-full'>
+        <Loading />
+      </div>
+    );
   }
 
   return (

@@ -10,7 +10,12 @@ export default function MyOrders() {
   const { orders, isLoading } = useOrder();
   const navigate = useNavigate();
 
-  if (isLoading) return <Loading />;
+  if (isLoading)
+    return (
+      <div className='min-h-[70vh] w-full'>
+        <Loading />
+      </div>
+    );
 
   return (
     <>
