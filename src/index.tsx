@@ -12,6 +12,7 @@ import MyOrders from './pages/MyOrders';
 import NotFound from './pages/NotFound';
 import OrderDetail from './pages/OrderDetail';
 import Products from './pages/Products';
+import Redirect from './pages/Redirect';
 import SavedItems from './pages/SavedItems';
 import Search from './pages/Search';
 import SignIn from './pages/SignIn';
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: '/search/:q',
         element: <Search />,
+      },
+      {
+        path: '/redirect',
+        element: <Redirect />,
       },
     ],
   },

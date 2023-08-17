@@ -54,7 +54,9 @@ export type AuthStore = AuthState & {
 export const AuthContext = createContext<AuthState>(initialState);
 
 const actionCodeSettings = {
-  url: isDev ? 'http://localhost:3000' : 'https://yucci.vercel.app',
+  url: isDev
+    ? 'http://localhost:3000/redirect'
+    : 'https://yucci.vercel.app/redirect',
   handleCodeInApp: true,
 };
 
@@ -131,10 +133,7 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
         email = window.prompt('Please provide your email for confirmation');
       }
       signInWithEmailLink(auth, email || '', window.location.href) //
-        .catch((e) => {
-          console.error(e);
-          showAlert(e);
-        })
+        .catch(console.error)
         .finally(() => setIsAuthEmailSent(false));
     }
   }, []);
