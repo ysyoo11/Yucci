@@ -16,18 +16,18 @@ const userOnlyPath = [
 const adminOnlyPath = ['/admin/new-product'];
 
 export default function BaseLayout({ children }: { children: ReactNode }) {
-  const location = useLocation();
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
 
   useEffect(() => {
-    if (!user && userOnlyPath.includes(location.pathname)) {
+    if (!user && userOnlyPath.includes(pathname)) {
       navigate('/signin', { replace: true });
     }
-    if (user && !user.isAdmin && adminOnlyPath.includes(location.pathname)) {
+    if (user && !user.isAdmin && adminOnlyPath.includes(pathname)) {
       navigate('/', { replace: true });
     }
-  }, [user, location.pathname]);
+  }, [user, pathname]);
 
   return <main className='mt-20'>{children}</main>;
 }

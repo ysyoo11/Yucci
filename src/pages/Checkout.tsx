@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Loading from '../components/core/Loading';
 import Button from '../components/ui/Button';
-import TextInput from '../components/ui/TextInput';
+import Input from '../components/ui/Input';
 import { useAuth } from '../context/auth-context';
 import { useCartContext } from '../context/cart-context';
 import useOrder from '../hooks/use-order';
@@ -84,7 +84,7 @@ export default function Checkout() {
           </h2>
           <div className='space-y-4 py-10'>
             <div className='space-y-4 lg:flex lg:space-x-2 lg:space-y-0'>
-              <TextInput
+              <Input
                 placeholder='First Name'
                 id='first name'
                 value={userInfo.firstName}
@@ -96,7 +96,7 @@ export default function Checkout() {
                   }))
                 }
               />
-              <TextInput
+              <Input
                 placeholder='Last Name'
                 id='last name'
                 value={userInfo.lastName}
@@ -106,7 +106,7 @@ export default function Checkout() {
                 }
               />
             </div>
-            <TextInput
+            <Input
               placeholder='Address 1'
               id='address1'
               value={userInfo.address1}
@@ -115,8 +115,8 @@ export default function Checkout() {
                 setUserInfo((prev) => ({ ...prev, address1: e.target.value }))
               }
             />
-            <TextInput
-              isOptional
+            <Input
+              required={false}
               placeholder='Address 2'
               id='address2'
               value={userInfo.address2}
@@ -126,7 +126,7 @@ export default function Checkout() {
               }
             />
             <div className='space-y-4 lg:flex lg:space-x-2 lg:space-y-0'>
-              <TextInput
+              <Input
                 placeholder='Suburb'
                 id='suburb'
                 value={userInfo.suburb}
@@ -135,7 +135,7 @@ export default function Checkout() {
                   setUserInfo((prev) => ({ ...prev, suburb: e.target.value }))
                 }
               />
-              <TextInput
+              <Input
                 placeholder='State'
                 id='state'
                 value={userInfo.state}
@@ -145,7 +145,7 @@ export default function Checkout() {
                 }
               />
             </div>
-            <TextInput
+            <Input
               placeholder='Postcode'
               id='postcode'
               value={userInfo.postcode}
@@ -154,7 +154,7 @@ export default function Checkout() {
                 setUserInfo((prev) => ({ ...prev, postcode: e.target.value }))
               }
             />
-            <TextInput
+            <Input
               placeholder='Phone Number'
               id='phone'
               value={userInfo.phone}

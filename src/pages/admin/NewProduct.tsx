@@ -2,9 +2,8 @@ import { FormEvent, useCallback, useEffect, useState } from 'react';
 
 import Loading from '../../components/core/Loading';
 import Button from '../../components/ui/Button';
-import NumberInput from '../../components/ui/NumberInput';
+import Input from '../../components/ui/Input';
 import Textarea from '../../components/ui/TextArea';
-import TextInput from '../../components/ui/TextInput';
 import { useAssertiveStore } from '../../context/assertives';
 import useProducts from '../../hooks/use-products';
 import { uploadToCloudinary } from '../../service/cloudinary';
@@ -129,7 +128,7 @@ export default function NewProduct() {
             ))}
           </select>
         </div>
-        <TextInput
+        <Input
           placeholder='Title'
           onChange={(e) =>
             setProductInfo((prev) => ({ ...prev, title: e.target.value }))
@@ -138,7 +137,8 @@ export default function NewProduct() {
           value={productInfo.title}
           name='title'
         />
-        <NumberInput
+        <Input
+          type='number'
           placeholder='Price'
           onChange={(e) =>
             setProductInfo((prev) => ({ ...prev, price: e.target.value }))
@@ -147,7 +147,7 @@ export default function NewProduct() {
           value={productInfo.price}
           name='price'
         />
-        <TextInput
+        <Input
           placeholder='Size options'
           onChange={(e) =>
             setProductInfo((prev) => ({ ...prev, options: e.target.value }))
