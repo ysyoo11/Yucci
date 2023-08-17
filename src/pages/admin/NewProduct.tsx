@@ -119,6 +119,7 @@ export default function NewProduct() {
               }))
             }
             disabled={loading === 'submit'}
+            value={productInfo.category}
             required
           >
             {categories.map((category, idx) => (
