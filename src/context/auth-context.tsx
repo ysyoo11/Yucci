@@ -1,10 +1,12 @@
 import {
   AuthProvider,
-  GithubAuthProvider,
   GoogleAuthProvider,
   User,
   getAuth,
+  isSignInWithEmailLink,
   onAuthStateChanged,
+  sendSignInLinkToEmail,
+  signInWithEmailLink,
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
@@ -18,7 +20,9 @@ import {
   useState,
 } from 'react';
 
+import { LOCAL_STORAGE_KEY } from '../constant/local-storage-key';
 import firebaseApp, { db } from '../service/firebase';
+import { isDev } from '../utils/env';
 
 import { useAssertiveStore } from './assertives';
 
@@ -29,26 +33,35 @@ type MyUser = User & {
 export type AuthState = {
   user: MyUser | null;
   isLoading: boolean;
+  isAuthEmailSent: boolean;
 };
 
 const initialState: AuthState = {
   user: null,
   isLoading: false,
+  isAuthEmailSent: false,
 };
 
-type AuthServiceProvider = 'google' | 'github';
+type AuthServiceProvider = 'google';
 
 export type AuthStore = AuthState & {
   login: (serviceProvider: AuthServiceProvider) => void;
   logout: () => void;
   uid: string | null;
+  loginWithEmail: (email: string) => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthState>(initialState);
 
+const actionCodeSettings = {
+  url: isDev ? 'http://localhost:3000' : 'https://yucci.vercel.app',
+  handleCodeInApp: true,
+};
+
 export function UserAuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<MyUser | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuthEmailSent, setIsAuthEmailSent] = useState(false);
   const { showNoti, showAlert } = useAssertiveStore();
 
   const auth = getAuth(firebaseApp);
@@ -58,9 +71,6 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
     switch (serviceProvider) {
       case 'google':
         authServiceProvider = new GoogleAuthProvider();
-        break;
-      case 'github':
-        authServiceProvider = new GithubAuthProvider();
         break;
       default:
         throw new Error('The service provider is not available');
@@ -87,6 +97,20 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
       });
   };
 
+  const loginWithEmail = async (email: string) => {
+    setIsLoading(true);
+    await sendSignInLinkToEmail(auth, email, actionCodeSettings)
+      .then(() => {
+        setIsAuthEmailSent(true);
+        window.localStorage.setItem(LOCAL_STORAGE_KEY.EMAIL_FOR_SIGNIN, email);
+      })
+      .catch((e) => {
+        console.error(e);
+        showAlert(e);
+      })
+      .finally(() => setIsLoading(false));
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -98,6 +122,27 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      let email = window.localStorage.getItem(
+        LOCAL_STORAGE_KEY.EMAIL_FOR_SIGNIN
+      );
+      if (!email) {
+        email = window.prompt('Please provide your email for confirmation');
+      }
+      signInWithEmailLink(auth, email || '', window.location.href) //
+        .catch((e) => {
+          console.error(e);
+          showAlert(e);
+        })
+        .finally(() => setIsAuthEmailSent(false));
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   const value = useMemo<AuthStore>(
     () => ({
       user,
@@ -105,6 +150,8 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
       isLoading,
       login,
       logout,
+      loginWithEmail,
+      isAuthEmailSent,
     }),
     [user, login, logout]
   );
