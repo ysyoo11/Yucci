@@ -13,7 +13,6 @@ export default function Products() {
 
   return (
     <>
-      {/* TODO: Fix background image url logic */}
       <Banner
         title={category || 'All items'}
         bgURL={`../images/hero/products/hero-${category || 'women'}.jpg`}
