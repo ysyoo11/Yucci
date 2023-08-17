@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import footerMenu from '../../assets/footer-menu.json';
 import { useAssertiveStore } from '../../context/assertives';
 import FooterList from '../custom/FooterList';
-import TextInput from '../ui/TextInput';
+import Input from '../ui/Input';
 
 import Logo from './Logo';
 
@@ -35,7 +35,7 @@ export default function Footer() {
               Policy.
             </p>
             <form onSubmit={handleRegisterNewsletter}>
-              <TextInput
+              <Input
                 id='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
