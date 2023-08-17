@@ -3,15 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 import GoogleLogo from '../components/svg/GoogleLogo';
 import Button from '../components/ui/Button';
-import TextInput from '../components/ui/TextInput';
-import { useAssertiveStore } from '../context/assertives';
+import Input from '../components/ui/Input';
 import { useAuth } from '../context/auth-context';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
-  const { user, login } = useAuth();
-  const { showNoti, showAlert } = useAssertiveStore();
+  const { user, login, loginWithEmail, isAuthEmailSent, isLoading } = useAuth();
 
   const socialLoginMethods = useMemo(
     () => [
@@ -26,19 +24,9 @@ export default function SignIn() {
     []
   );
 
-  const onEmailSubmit = (e: FormEvent) => {
-    if (email === '') {
-      showAlert({
-        name: 'Invalid email',
-        message: 'Please write a valid email address.',
-      });
-    }
+  const onEmailSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // TODO:
-    showNoti({
-      title: '🛠 This feature has not been developed yet.',
-      variant: 'alert',
-    });
+    await loginWithEmail(email);
   };
 
   useEffect(() => {
@@ -46,6 +34,18 @@ export default function SignIn() {
       navigate('/');
     }
   }, [user]);
+
+  if (isAuthEmailSent) {
+    return (
+      <div className='mx-auto flex min-h-[20rem] max-w-sm flex-col items-center justify-center space-y-4 text-center lg:min-h-[32rem] lg:max-w-lg lg:space-y-8'>
+        <p className='text-xl lg:text-3xl'>
+          Email for authentication has been sent to&nbsp;
+          <strong>{email}</strong>.
+        </p>
+        <p className='text-lg lg:text-xl'>Please check your inbox.</p>
+      </div>
+    );
+  }
 
   return (
     <div className='mx-auto flex w-full max-w-xs flex-col items-center pt-12'>
@@ -70,35 +70,19 @@ export default function SignIn() {
           continue with your email address
         </p>
         <p className='text-center leading-tight'>
-          Sign in with your GUCCI email and password or create a profile if you
-          are new.
+          Sign in with your GUCCI email or create a profile if you are new.
         </p>
         <form action='submit' className='space-y-8' onSubmit={onEmailSubmit}>
-          <div className='relative z-0 w-full'>
-            <input
-              type='email'
-              id='email'
-              className='peer block w-full appearance-none border border-black bg-transparent px-2 pb-4 pt-6 text-base text-gray-900 focus:border-gray-800 focus:outline-black'
-              placeholder=' '
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label
-              htmlFor='email'
-              className='absolute left-3 top-5 -z-10 origin-[0] -translate-y-4 scale-75 transform text-base text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-gray-600'
-            >
-              EMAIL*
-            </label>
-          </div>
-          <TextInput
+          <Input
             placeholder='EMAIL'
             onChange={(e) => setEmail(e.target.value)}
             id='email'
             value={email}
             name='email'
+            type='email'
           />
-          <Button className='tracking-wide' full>
-            continue
+          <Button className='tracking-wide' full disabled={isLoading || !email}>
+            {isLoading ? 'loading..' : 'continue'}
           </Button>
         </form>
       </div>

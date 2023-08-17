@@ -15,9 +15,10 @@ type Props = ComponentPropsWithoutRef<'input'> & {
 export default function Input({
   required = true,
   color = 'black',
+  placeholder,
   ...props
 }: Props) {
-  const { id, disabled, placeholder } = props;
+  const { id, disabled } = props;
   return (
     <div
       className={clsx('relative z-0 w-full', {
