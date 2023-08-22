@@ -29,5 +29,12 @@ export default function BaseLayout({ children }: { children: ReactNode }) {
     }
   }, [user, pathname]);
 
+  useEffect(() => {
+    const scrollTopTimer = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 50);
+    return () => clearTimeout(scrollTopTimer);
+  }, [pathname]);
+
   return <main className='mt-20'>{children}</main>;
 }
