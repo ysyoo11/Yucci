@@ -194,7 +194,12 @@ export default function Checkout() {
             {cartItems!.map((item) => (
               <li key={item.id} className='flex space-x-6 py-6'>
                 <div className='basis-1/5'>
-                  <img src={item.imageURL} alt={item.title} />
+                  <img
+                    src={item.imageURL}
+                    alt={item.title}
+                    width={540}
+                    height={540}
+                  />
                 </div>
                 <div className='basis-3/5 text-xs font-bold'>
                   <p className='text-sm uppercase'>{item.title}</p>

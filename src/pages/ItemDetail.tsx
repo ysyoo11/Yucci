@@ -69,7 +69,12 @@ export default function ItemDetail() {
   return (
     <div className='mx-auto max-w-sm px-4 md:max-w-lg lg:flex lg:max-w-7xl'>
       <div className='py-6 lg:w-full'>
-        <img src={product.imageURL} alt={product.title} />
+        <img
+          src={product.imageURL}
+          alt={product.title}
+          width={540}
+          height={540}
+        />
       </div>
       <div className='space-y-2 lg:w-full'>
         <p className='text-center font-bold uppercase'>{product.title}</p>

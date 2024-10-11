@@ -93,6 +93,8 @@ export default function HeroSection() {
                 src={img.src}
                 alt={img.title}
                 draggable={false}
+                width={1200}
+                height={1800}
                 className='animate-hero-img'
               />
             </div>

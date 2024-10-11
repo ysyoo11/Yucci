@@ -70,7 +70,12 @@ export default function CartButton() {
                       >
                         <div className='flex w-full'>
                           <div className='basis-2/5'>
-                            <img src={item.imageURL} alt={item.title} />
+                            <img
+                              src={item.imageURL}
+                              alt={item.title}
+                              width={540}
+                              height={540}
+                            />
                           </div>
                           <div className='basis-3/5 space-y-2'>
                             <p className='text-sm font-bold uppercase'>
