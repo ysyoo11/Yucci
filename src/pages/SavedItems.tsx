@@ -56,7 +56,12 @@ export default function SavedItems() {
                 className='relative flex h-full w-full flex-col items-center justify-between bg-white px-4 py-4 lg:pb-10'
               >
                 <div className='flex justify-center p-4'>
-                  <img src={item.imageURL} alt={item.title} />
+                  <img
+                    src={item.imageURL}
+                    alt={item.title}
+                    width={540}
+                    height={540}
+                  />
                 </div>
                 <div className='space-y-2'>
                   <p className='text-center text-xs font-bold uppercase md:text-sm lg:text-base'>

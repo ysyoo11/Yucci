@@ -82,6 +82,8 @@ export default function NewProduct() {
           <img
             src={previewURL}
             alt='Uploaded image preview'
+            width={540}
+            height={540}
             className='h-full max-h-[40vh]'
           />
         </div>

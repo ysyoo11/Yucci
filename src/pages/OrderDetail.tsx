@@ -84,7 +84,12 @@ export default function OrderDetail() {
                     <tr key={item.id}>
                       <td className='max-w-[4rem] whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0'>
                         <div>
-                          <img src={item.imageURL} alt={item.title} />
+                          <img
+                            src={item.imageURL}
+                            alt={item.title}
+                            width={540}
+                            height={540}
+                          />
                         </div>
                       </td>
                       <td className='line-clamp-2 max-w-[8rem] px-3 py-4 text-sm text-gray-500 lg:line-clamp-none lg:max-w-none lg:text-base'>

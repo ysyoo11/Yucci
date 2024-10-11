@@ -38,11 +38,16 @@ export default function ProductsDisplay({ products }: Props) {
       {products.map((product) => (
         <div
           key={product.id}
-          className='relative bg-white p-4 pb-16 pt-20 hover:cursor-pointer'
+          className='relative h-full w-full bg-white p-4 pb-16 pt-20 hover:cursor-pointer'
           onClick={() => navigate(`/item/${product.id}`)}
         >
-          <div className='mx-auto w-2/3'>
-            <img src={product.imageURL} alt={product.title} />
+          <div className='mx-auto h-full w-2/3'>
+            <img
+              src={product.imageURL}
+              alt={product.title}
+              width={540}
+              height={540}
+            />
           </div>
           <p className='text-center text-xs font-bold uppercase lg:text-sm'>
             {product.title}

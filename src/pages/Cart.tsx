@@ -83,7 +83,12 @@ export default function Cart() {
                   <div className='mx-auto flex w-full max-w-sm flex-col items-center lg:max-w-none lg:flex-row lg:items-start lg:justify-between'>
                     <div className='lg:flex lg:basis-2/3'>
                       <div className='lg:basis-1/3'>
-                        <img src={item.imageURL} alt={item.title} />
+                        <img
+                          src={item.imageURL}
+                          alt={item.title}
+                          width={540}
+                          height={540}
+                        />
                       </div>
                       <div className='flex flex-col items-center lg:items-start lg:justify-between'>
                         <h5 className='max-w-[14rem] text-center text-lg uppercase lg:text-left lg:text-base'>
