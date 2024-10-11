@@ -11,6 +11,13 @@ export default function Banner({ bgURL, title }: Props) {
         backgroundImage: `url(${bgURL})`,
       }}
     >
+      <img
+        src={bgURL}
+        alt=''
+        width='0'
+        height='0'
+        style={{ display: 'none' }}
+      />
       <div className='absolute left-1/2 top-1/2 -translate-x-1/2 space-y-4 text-center text-white'>
         <p className='text-3xl uppercase lg:text-5xl'>{title}</p>
       </div>
