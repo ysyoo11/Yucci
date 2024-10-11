@@ -36,6 +36,7 @@ export default function Footer() {
             </p>
             <form onSubmit={handleRegisterNewsletter}>
               <Input
+                type='email'
                 id='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
